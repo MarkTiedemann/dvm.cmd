@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.3
+set dvm_version=0.4
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -196,7 +196,7 @@ exit /b 0
 for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/MarkTiedemann/dvm.cmd/releases | findstr \/MarkTiedemann/dvm.cmd/releases/download/.*/dvm.cmd | findstr /n . | findstr ^1:"') do (
 	if %%v neq %dvm_version% (
 		echo Updating dvm from %dvm_version% to %%v
-		curl -Lo "%dvm_script%" https://github.com/MarkTiedemann/dvm.cmd/releases/download/%%v/dvm.cmd
+		curl -Lo "%dvm_script%" https://github.com/MarkTiedemann/dvm.cmd/releases/download/%%v/dvm.cmd & goto :eof
 	) else (
 		echo dvm is up-to-date
 	)
