@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.1
+set dvm_version=0.2
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -186,6 +186,8 @@ for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/MarkTiedemann/dv
 		echo New dvm version available: %dvm_version%. Currently using %%v
 		echo Run 'dvm update-self' to update dvm
 		exit /b 1
+	) else (
+		echo dvm is up-to-date
 	)
 )
 exit /b 0
