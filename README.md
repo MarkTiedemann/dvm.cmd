@@ -7,7 +7,7 @@
 Put `dvm.cmd` into a directory in your `%Path%`, e.g. `C:\bin`:
 
 ```batch
-curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.4/dvm.cmd
+curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.5/dvm.cmd
 ```
 
 ## Usage
@@ -35,9 +35,6 @@ C:\> dvm /?
 
 :: List latest Deno versions
 > dvm list-latest
-
-:: Uninstall Deno version
-> dvm uninstall v1.0.0
 
 :: Clean-up unused Deno versions
 > dvm clean-up

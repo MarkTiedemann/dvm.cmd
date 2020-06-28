@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.4
+set dvm_version=0.5
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -78,9 +78,6 @@ echo ^> dvm list-downloaded
 echo.
 echo :: List latest Deno versions
 echo ^> dvm list-latest
-echo.
-echo :: Uninstall Deno version
-echo ^> dvm uninstall v1.0.0
 echo.
 echo :: Clean-up unused Deno versions
 echo ^> dvm clean-up
