@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.5
+set dvm_version=0.6
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -180,7 +180,7 @@ exit /b 0
 :check-update-self
 for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/MarkTiedemann/dvm.cmd/releases | findstr \/MarkTiedemann/dvm.cmd/releases/download/.*/dvm.cmd | findstr /n . | findstr ^1:"') do (
 	if %%v neq %dvm_version% (
-		echo New dvm version available: %dvm_version%. Currently using %%v
+		echo New dvm version available: %%v. Currently using %dvm_version%
 		echo Run 'dvm update-self' to update dvm
 		exit /b 1
 	) else (
