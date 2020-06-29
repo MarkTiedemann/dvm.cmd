@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.6
+set dvm_version=0.7
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -116,7 +116,7 @@ if [%2] equ [] (
 		) else (
 			echo Downloading Deno %%v
 			curl -Lo "%dvm_root%\deno-%%v.zip" https://github.com/denoland/deno/releases/download/%%v/deno-x86_64-pc-windows-msvc.zip
-			powershell -c "Expand-Archive '%dvm_root%\deno-%%v.zip' -Destination '%dvm_root%'"
+			tar xf "%dvm_root%\deno-%%v.zip" -C "%dvm_root%"
 			del "%dvm_root%\deno-%%v.zip"
 			ren "%dvm_root%\deno.exe" deno-%%v.exe
 		)
@@ -127,7 +127,7 @@ if [%2] equ [] (
 	) else (
 		echo Downloading Deno %2
 		curl -Lo "%dvm_root%\deno-%2.zip" https://github.com/denoland/deno/releases/download/%2/deno-x86_64-pc-windows-msvc.zip
-		powershell -c "Expand-Archive '%dvm_root%\deno-%2.zip' -Destination '%dvm_root%'"
+		tar xf "%dvm_root%\deno-%2.zip" -C "%dvm_root%"
 		del "%dvm_root%\deno-%2.zip"
 		ren "%dvm_root%\deno.exe" deno-%2.exe
 	)
