@@ -4,10 +4,10 @@
 
 ## Installation
 
-Put `dvm.cmd` into a directory in your `%Path%`, e.g. `C:\bin`:
+Put `dvm.cmd` into a directory in your `%path%`, e.g. `C:\bin`:
 
 ```batch
-curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.7/dvm.cmd
+curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.8/dvm.cmd
 ```
 
 ## Usage

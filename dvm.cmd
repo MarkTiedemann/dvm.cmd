@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.7
+set dvm_version=0.8
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -98,7 +98,7 @@ exit /b 0
 
 :install
 if [%2] equ [] (
-	for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/denoland/deno/releases | findstr \/denoland/deno/releases/download/.*/deno-x86_64-pc-windows-msvc.zip | findstr /n . | findstr ^1:"') do (
+	for /f %%v in ('curl -s https://dl.deno.land/release-latest.txt') do (
 		call :download _ %%v
 		call :use _ %%v
 	)
@@ -110,12 +110,12 @@ exit /b 0
 
 :download
 if [%2] equ [] (
-	for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/denoland/deno/releases | findstr \/denoland/deno/releases/download/.*/deno-x86_64-pc-windows-msvc.zip | findstr /n . | findstr ^1:"') do (
+	for /f %%v in ('curl -s https://dl.deno.land/release-latest.txt') do (
 		if exist "%dvm_root%\deno-%%v.exe" (
 			echo Deno %%v is already downloaded
 		) else (
 			echo Downloading Deno %%v
-			curl -Lo "%dvm_root%\deno-%%v.zip" https://github.com/denoland/deno/releases/download/%%v/deno-x86_64-pc-windows-msvc.zip
+			curl -o "%dvm_root%\deno-%%v.zip" https://dl.deno.land/release/%%v/deno-x86_64-pc-windows-msvc.zip
 			tar xf "%dvm_root%\deno-%%v.zip" -C "%dvm_root%"
 			del "%dvm_root%\deno-%%v.zip"
 			ren "%dvm_root%\deno.exe" deno-%%v.exe
@@ -126,7 +126,7 @@ if [%2] equ [] (
 		echo Deno %2 is already downloaded
 	) else (
 		echo Downloading Deno %2
-		curl -Lo "%dvm_root%\deno-%2.zip" https://github.com/denoland/deno/releases/download/%2/deno-x86_64-pc-windows-msvc.zip
+		curl -o "%dvm_root%\deno-%2.zip" https://dl.deno.land/release/%2/deno-x86_64-pc-windows-msvc.zip
 		tar xf "%dvm_root%\deno-%2.zip" -C "%dvm_root%"
 		del "%dvm_root%\deno-%2.zip"
 		ren "%dvm_root%\deno.exe" deno-%2.exe
@@ -142,11 +142,17 @@ if [%2] equ [] (
 		echo Deno %2 cannot be used since it is not downloaded
 		exit /b 1
 	) else (
-		if exist "%dvm_script_dir%deno.exe" (
-			del "%dvm_script_dir%deno.exe"
+		for /f %%v in ('deno eval -p Deno.version.deno') do (
+			if v%%v equ %2 (
+				echo Deno %2 is already in use
+			) else (
+				if exist "%dvm_script_dir%deno.exe" (
+					del "%dvm_script_dir%deno.exe"
+				)
+				mklink "%dvm_script_dir%deno.exe" "%dvm_root%\deno-%2.exe" > nul
+				echo Using Deno %2
+			)
 		)
-		mklink "%dvm_script_dir%deno.exe" "%dvm_root%\deno-%2.exe" > nul
-		echo Using Deno %2
 	)
 )
 exit /b 0
@@ -165,13 +171,12 @@ for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/denoland/deno/re
 exit /b 0
 
 :clean-up
-for /f "tokens=2" %%v in ('deno -V') do (
+for /f %%v in ('deno eval -p Deno.version.deno') do (
 	for %%f in ("%dvm_root%\*") do (
-		if deno-v%%v neq %%~nf (
-			set "file_wo_ext=%%~nf"
-			set "version=!file_wo_ext:~5!"
-			echo Deleting Deno !version!
-			del "%dvm_root%\%%~nf.exe"
+		if deno-v%%v.exe neq %%~nf%%~xf (
+			set file=%%~nf
+			echo Deleting Deno !file:~5!
+			del "%%~ff"
 		)
 	)
 )
