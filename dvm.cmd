@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.8
+set dvm_version=0.9
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -10,84 +10,51 @@ if not exist "%dvm_root%" (
 	md "%dvm_root%"
 )
 
-if [%1] equ [] (
-	goto :help
-) else (
-	if [%1] equ [/?] (
-		goto :help
-	) else (
-		if [%1] equ [/v] (
-			goto :version
-		) else (
-			if [%1] equ [install] (
-				goto :install
-			) else (
-				if [%1] equ [download] (
-					goto :download
-				) else (
-					if [%1] equ [use] (
-						goto :use
-					) else (
-						if [%1] equ [list-downloaded] (
-							goto :list-downloaded
-						) else (
-							if [%1] equ [list-latest] (
-								goto :list-latest
-							) else (
-								if [%1] equ [clean-up] (
-									goto :clean-up
-								) else (
-									if [%1] equ [check-update-self] (
-										goto :check-update-self
-									) else (
-										if [%1] equ [update-self] (
-											goto :update-self
-										) else (
-											goto :help
-										)
-									)
-								)
-							)
-						)
-					)
-				)
-			)
-		)
-	)
-)
+if [%1] equ [] ( goto :help ) else ^
+if [%1] equ [/?] ( goto :help ) else ^
+if [%1] equ [/v] ( goto :version ) else ^
+if [%1] equ [install] ( goto :install ) else ^
+if [%1] equ [download] ( goto :download ) else ^
+if [%1] equ [use] ( goto :use ) else ^
+if [%1] equ [list-downloaded] ( goto :list-downloaded ) else ^
+if [%1] equ [list-latest] ( goto :list-latest ) else ^
+if [%1] equ [clean-up] ( goto :clean-up ) else ^
+if [%1] equ [check-update-self] ( goto :check-update-self ) else ^
+if [%1] equ [update-self] ( goto :update-self ) else ^
+goto :help
 
 :help
-echo.
+echo,
 echo :: Download and use latest Deno version
 echo ^> dvm install
-echo.
+echo,
 echo :: Download and use specific Deno version
 echo ^> dvm install v1.0.0
-echo.
+echo,
 echo :: Download (but do not use) latest Deno version
 echo ^> dvm download
-echo.
+echo,
 echo :: Download (but do not use) specific Deno version
 echo ^> dvm download v1.0.0
-echo.
+echo,
 echo :: Use specific Deno version
 echo ^> dvm use v1.0.0
-echo.
+echo,
 echo :: List downloaded Deno versions
 echo ^> dvm list-downloaded
-echo.
+echo,
 echo :: List latest Deno versions
 echo ^> dvm list-latest
-echo.
+echo,
 echo :: Clean-up unused Deno versions
 echo ^> dvm clean-up
-echo.
+echo,
 echo :: Check whether a dvm update is available
 echo ^> dvm check-update-self
-echo.
+echo,
 echo :: Update dvm to latest version
 echo ^> dvm update-self
-echo.
+echo,
 echo :: Print dvm version
 echo ^> dvm /v
 exit /b 1
