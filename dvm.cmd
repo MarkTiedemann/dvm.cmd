@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.11
+set dvm_version=0.12
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -78,26 +78,22 @@ exit /b 0
 :download
 if [%2] equ [] (
 	for /f %%v in ('curl -s https://dl.deno.land/release-latest.txt') do (
-		if exist "%dvm_root%\deno-%%v.exe" (
-			echo Deno %%v is already downloaded
-		) else (
-			echo Downloading Deno %%v
-			curl -o "%dvm_root%\deno-%%v.zip" https://dl.deno.land/release/%%v/deno-x86_64-pc-windows-msvc.zip
-			tar xf "%dvm_root%\deno-%%v.zip" -C "%dvm_root%"
-			del "%dvm_root%\deno-%%v.zip"
-			ren "%dvm_root%\deno.exe" deno-%%v.exe
-		)
+		call :download_unzip _ %%v
 	)
 ) else (
-	if exist "%dvm_root%\deno-%2.exe" (
+	call :download_unzip _ %2
+)
+exit /b 0
+
+:download_unzip
+if exist "%dvm_root%\deno-%2.exe" (
 		echo Deno %2 is already downloaded
-	) else (
-		echo Downloading Deno %2
-		curl -o "%dvm_root%\deno-%2.zip" https://dl.deno.land/release/%2/deno-x86_64-pc-windows-msvc.zip
-		tar xf "%dvm_root%\deno-%2.zip" -C "%dvm_root%"
-		del "%dvm_root%\deno-%2.zip"
-		ren "%dvm_root%\deno.exe" deno-%2.exe
-	)
+) else (
+	echo Downloading Deno %2
+	curl -o "%dvm_root%\deno-%2.zip" https://dl.deno.land/release/%2/deno-x86_64-pc-windows-msvc.zip
+	tar xf "%dvm_root%\deno-%2.zip" -C "%dvm_root%"
+	del "%dvm_root%\deno-%2.zip"
+	ren "%dvm_root%\deno.exe" deno-%2.exe
 )
 exit /b 0
 
