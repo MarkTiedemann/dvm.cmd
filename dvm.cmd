@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.10
+set dvm_version=0.11
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -139,12 +139,11 @@ exit /b 0
 
 :clean-up
 for /f "delims=[] tokens=2" %%l in ('"if exist ""%dvm_script_dir%deno.exe"" ( dir ""%dvm_script_dir%deno.exe"" | findstr SYMLINK )"') do (
-		for %%f in ("%dvm_root%\*") do (
-			if %%~nl%%~xl neq %%~nf%%~xf (
-				set file=%%~nf
-				echo Deleting Deno !file:~5!
-				del "%%~ff"
-			)
+	for %%f in ("%dvm_root%\*") do (
+		if %%~nl%%~xl neq %%~nf%%~xf (
+			set file=%%~nf
+			echo Deleting Deno !file:~5!
+			del "%%~ff"
 		)
 	)
 )

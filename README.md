@@ -7,7 +7,7 @@
 Put `dvm.cmd` into a directory in your `%path%`, e.g. `C:\bin`:
 
 ```batch
-curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.10/dvm.cmd
+curl -Lo C:\bin\dvm.cmd https://github.com/MarkTiedemann/dvm.cmd/releases/download/0.11/dvm.cmd
 ```
 
 ## Usage
