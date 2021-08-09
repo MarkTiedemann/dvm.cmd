@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set dvm_version=0.9
+set dvm_version=0.10
 set "dvm_script=%~f0"
 set "dvm_script_dir=%~dp0"
 set "dvm_root=%appdata%\dvm"
@@ -109,17 +109,17 @@ if [%2] equ [] (
 		echo Deno %2 cannot be used since it is not downloaded
 		exit /b 1
 	) else (
-		for /f %%v in ('deno eval -p Deno.version.deno') do (
-			if v%%v equ %2 (
-				echo Deno %2 is already in use
-			) else (
-				if exist "%dvm_script_dir%deno.exe" (
-					del "%dvm_script_dir%deno.exe"
+		if exist "%dvm_script_dir%deno.exe" (
+			for /f "delims=[] tokens=2" %%l in ('"dir ""%dvm_script_dir%deno.exe"" | findstr SYMLINK"') do (
+				if deno-%2 equ %%~nl (
+					echo Deno %2 is already in use
+					exit /b 0
 				)
-				mklink "%dvm_script_dir%deno.exe" "%dvm_root%\deno-%2.exe" > nul
-				echo Using Deno %2
 			)
+			del "%dvm_script_dir%deno.exe"
 		)
+		mklink "%dvm_script_dir%deno.exe" "%dvm_root%\deno-%2.exe" > nul
+		echo Using Deno %2
 	)
 )
 exit /b 0
@@ -138,12 +138,13 @@ for /f "delims=/ tokens=6" %%v in ('"curl -s https://github.com/denoland/deno/re
 exit /b 0
 
 :clean-up
-for /f %%v in ('deno eval -p Deno.version.deno') do (
-	for %%f in ("%dvm_root%\*") do (
-		if deno-v%%v.exe neq %%~nf%%~xf (
-			set file=%%~nf
-			echo Deleting Deno !file:~5!
-			del "%%~ff"
+for /f "delims=[] tokens=2" %%l in ('"if exist ""%dvm_script_dir%deno.exe"" ( dir ""%dvm_script_dir%deno.exe"" | findstr SYMLINK )"') do (
+		for %%f in ("%dvm_root%\*") do (
+			if %%~nl%%~xl neq %%~nf%%~xf (
+				set file=%%~nf
+				echo Deleting Deno !file:~5!
+				del "%%~ff"
+			)
 		)
 	)
 )
