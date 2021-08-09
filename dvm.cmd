@@ -87,7 +87,7 @@ exit /b 0
 
 :download_unzip
 if exist "%dvm_root%\deno-%2.exe" (
-		echo Deno %2 is already downloaded
+	echo Deno %2 is already downloaded
 ) else (
 	echo Downloading Deno %2
 	curl -o "%dvm_root%\deno-%2.zip" https://dl.deno.land/release/%2/deno-x86_64-pc-windows-msvc.zip
